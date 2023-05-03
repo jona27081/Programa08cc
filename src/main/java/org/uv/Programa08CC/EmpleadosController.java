@@ -62,8 +62,8 @@ public class EmpleadosController {
     @PostMapping("/empleados")
     public ResponseEntity<DTOEmpleado> createEmployee(@RequestBody DTOEmpleado emp) {
         try {
-            DTOEmpleado _emp = empleadosRepository.save(new DTOEmpleado(emp.getNombre(), emp.getDireccion(), emp.getTelefono()));
-            return new ResponseEntity<>(_emp, HttpStatus.CREATED);
+            DTOEmpleado empNuevo = empleadosRepository.save(new DTOEmpleado(emp.getNombre(), emp.getDireccion(), emp.getTelefono()));
+            return new ResponseEntity<>(empNuevo, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -83,11 +83,11 @@ public class EmpleadosController {
     public ResponseEntity<DTOEmpleado> updateEmployee(@PathVariable("id") long id, @RequestBody DTOEmpleado emp) {
         Optional<DTOEmpleado> empData = empleadosRepository.findById(id);
         if(empData.isPresent()){
-            DTOEmpleado _emp = empData.get();
-            _emp.setNombre(emp.getNombre());
-            _emp.setDireccion(emp.getDireccion());
-            _emp.setTelefono(emp.getTelefono());
-            return new ResponseEntity<>(empleadosRepository.save(_emp), HttpStatus.OK);
+            DTOEmpleado empUpd = empData.get();
+            empUpd.setNombre(emp.getNombre());
+            empUpd.setDireccion(emp.getDireccion());
+            empUpd.setTelefono(emp.getTelefono());
+            return new ResponseEntity<>(empleadosRepository.save(empUpd), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
